@@ -1,0 +1,32 @@
+# Dependencias
+node_modules/
+apps/*/node_modules/
+
+# Builds / caches
+dist/
+build/
+coverage/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+.yarn/*
+.cache/
+
+# SO/editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Entornos
+.env
+.env.*
+!*.example
+
+# Docker (si generamos artefactos locales)
+docker-data/
+
+# Prisma
+# Ojo: SÍ queremos versionar prisma/migrations cuando existan,
+# así que NO las ignores.
