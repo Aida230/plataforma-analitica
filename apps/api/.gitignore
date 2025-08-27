@@ -30,3 +30,4 @@ docker-data/
 # Prisma
 # Ojo: SÍ queremos versionar prisma/migrations cuando existan,
 # así que NO las ignores.
+/src/generated/prisma

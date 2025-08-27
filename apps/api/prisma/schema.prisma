@@ -1,0 +1,42 @@
+// --------------------------------------
+// Prisma Schema
+// Aquí definimos:
+// 1. Cómo se conecta Prisma a la base de datos
+// 2. Cómo se genera el cliente de Prisma (para usar en Node.js)
+// 3. Los modelos (tablas) de nuestra base de datos
+// --------------------------------------
+
+// ----------------------------
+// GENERATOR
+// ----------------------------
+// Prisma necesita generar un "cliente" en JavaScript
+// Ese cliente es una librería que usaremos en el backend
+// para hacer queries a la base de datos (crear, leer, actualizar, borrar)
+generator client {
+  provider = "prisma-client-js"     // Genera el cliente en JS
+  output   = "../src/generated/prisma" // Carpeta donde guardará el cliente
+}
+
+// ----------------------------
+// DATASOURCE (CONEXIÓN)
+// ----------------------------
+// Aquí le decimos a Prisma qué base de datos usar
+// provider = "postgresql" → estamos usando PostgreSQL
+// url = se saca del archivo .env con la variable DATABASE_URL
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------
+// MODELO (TABLA)
+// ----------------------------
+// Aquí definimos un modelo "User"
+// Prisma lo traducirá a una tabla llamada "User"
+// con las columnas que pongamos aquí.
+model User {
+  id        String   @id @default(cuid())  // Identificador único (texto tipo UUID)
+  email     String   @unique               // Campo único (no se puede repetir)
+  name      String?                        // Campo opcional (puede ser null)
+  createdAt DateTime @default(now())       // Fecha de creación, se rellena sola
+}
