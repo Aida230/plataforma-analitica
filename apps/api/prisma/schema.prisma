@@ -12,10 +12,13 @@
 // Prisma necesita generar un "cliente" en JavaScript
 // Ese cliente es una librería que usaremos en el backend
 // para hacer queries a la base de datos (crear, leer, actualizar, borrar)
+
+
 generator client {
   provider = "prisma-client-js"     // Genera el cliente en JS
-  output   = "../src/generated/prisma" // Carpeta donde guardará el cliente
 }
+
+
 
 // ----------------------------
 // DATASOURCE (CONEXIÓN)
