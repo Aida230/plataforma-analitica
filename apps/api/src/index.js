@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { env } from "./config/env.js"
 import { prisma } from './lib/prisma.js'
-import { usersRouter } from './routes/users.js'
+import { apiRouter } from './routes/index.routes.js'
+import { errorMiddleware } from './middlewares/error.middleware.js'
 
 //Cargamos las variables definidas en .env (por ejemplo PORT=4000)
 dotenv.config();
@@ -33,25 +34,20 @@ app.get("/kpis/summary", (req, res) => {
 // ----------------------------
 // Monta el router de usuarios
 // ----------------------------
-// Todas las rutas definidas en usersRouter cuelgan de /users
-app.use('/users', usersRouter)
 
-// ----------------------------
-// Arranque + cierre ordenado
-// ----------------------------
-process.on('SIGINT', async () => {
-  await prisma.$disconnect()
-  process.exit(0)
-})
-process.on('SIGTERM', async () => {
-  await prisma.$disconnect()
-  process.exit(0)
-})
+app.use('/', apiRouter)
+
+// ❗ Manejador de errores al final
+app.use(errorMiddleware)
 
 const PORT = env.port || 4000
 
-//Podemos escuchar el servidor en el puerto definido, cuando arranca podemos verlo en la consola
+// Cierre ordenado
+process.on('SIGINT', async () => { await prisma.$disconnect(); process.exit(0) })
+process.on('SIGTERM', async () => { await prisma.$disconnect(); process.exit(0) })
 
+
+//Podemos escuchar el servidor en el puerto definido, cuando arranca podemos verlo en la consola
 app.listen(PORT, () => {
   console.log(`🚀 API CORRIENDO EN http://localhost:${env.port}`)
 })
