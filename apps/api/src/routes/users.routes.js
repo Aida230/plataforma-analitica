@@ -7,12 +7,14 @@ import {
   updateUser,
   deleteUser,
 } from '../controllers/users.controller.js'
+import { validate } from '../middlewares/validate.js'
+import { UsersSchemas } from '../schemas/users.schema.js'
 
 export const usersRouter = Router()
 
-usersRouter.get('/', listUsers)
-usersRouter.get('/:id', getUserById)
-usersRouter.post('/', createUser)
-usersRouter.put('/:id', replaceUser)
-usersRouter.patch('/:id', updateUser)
-usersRouter.delete('/:id', deleteUser)
+usersRouter.get('/', /* validate(UsersSchemas.list), */ listUsers)
+usersRouter.get('/:id', validate(UsersSchemas.getById), getUserById)
+usersRouter.post('/', validate(UsersSchemas.create), createUser)
+usersRouter.put('/:id', validate(UsersSchemas.replace), replaceUser)
+usersRouter.patch('/:id', validate(UsersSchemas.update), updateUser)
+usersRouter.delete('/:id', validate(UsersSchemas.remove), deleteUser)

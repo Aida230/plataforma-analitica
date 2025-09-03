@@ -16,6 +16,7 @@ const app = express();
 //Habilitamos middleware (funciones que se ejecutan en cada peticion)
 app.use(cors()); //Este middleware activa cors: sin esto el navegadr bloquearía las peticiones
 app.use(express.json()); //Este middleware le dice a Express que atienda JSON en el body de las peticiones
+app.use(express.urlencoded({ extended: true }));
 
 
 // Ruta de salud o diagnóstico rápido del servidor (no es de dominio).

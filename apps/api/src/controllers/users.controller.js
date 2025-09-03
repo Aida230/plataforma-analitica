@@ -31,7 +31,7 @@ export async function createUser(req, res, next) {
     res.status(201).json(created)
   } catch (err) {
     // Prisma P2002 → unique (email duplicado)
-    if (err?.codo === 'P2002') {
+    if (err?.code === 'P2002') {
       return res.status(409).json({ error: 'El "email" ya existe'}) 
     }
     next(err)
