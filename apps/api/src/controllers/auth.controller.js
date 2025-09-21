@@ -39,7 +39,7 @@ export async function register(req, res, next) {
     })
     //6- Responder 201 Created
     return res.status(201).json(user)
-  } catch {
+  } catch (err) {
     //Prisma P2002 -> violacion de unique (email duplicado)
     if (err?.code === 'P2002') {
       return res.status(409).json({ error: 'el email ya existe 😩'})

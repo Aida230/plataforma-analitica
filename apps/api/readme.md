@@ -16,3 +16,21 @@ npx prisma format
 
 para hacer la migracion de add_auth_fields de los hash 
 npx prisma migrate dev --name add-auth-fields
+
+-----------------------------------------------------------------------------------------
+para registrar un usuario en POSTMAN
+Método: POST
+
+URL: http://localhost:4000/auth/register
+
+Headers:
+
+Content-Type: application/json
+
+Body → raw → JSON:
+
+{
+  "name": "Ada Lovelace",
+  "email": "ada+1@example.com",
+  "password": "secret123"
+}
