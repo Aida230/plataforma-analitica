@@ -29,13 +29,22 @@ export const UsersSchemas = {
   list: {
     // Definición del esquema para la query de "listar usuarios"
     query: z.object({
-      // `page`: número entero, mínimo 1, por defecto 1
-      page: z.coerce.number().int().min(1).default(1),
-      // `limit`: número entero, mínimo 1, máximo 50, por defecto 20
-      limit: z.coerce.number().int().min(1).max(50).default(20),
-      // `search`: string opcional, mínimo 1 caracter, máximo 120, sin espacios sobrantes
-      search: z.string().trim().min(1).max(120).optional()
-    }),
+      page: z.coerce.number()
+        .int()
+        .min(1, { message: 'La página mínima es 1 😘' }) // 👈 mensaje personalizado
+        .default(1),
+
+      limit: z.coerce.number()
+        .int()
+        .min(1, { message: 'El mínimo para limit es 1 😘' }) // 👈 personalizado
+        .max(50, { message: 'El máximo para limit es 50 😘' }) // 👈 personalizado
+        .default(20),
+
+      // search opcional; si lo quieres con mensaje cuando venga vacío:
+      search: z.string().trim().min(1, { message: 'search no puede estar vacío' }).max(120, {
+        message: 'search es demasiado largo'
+      }).optional()
+    })
   },
 
   // GET /users/:id

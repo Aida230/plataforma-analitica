@@ -3,8 +3,48 @@ import { prisma } from '../lib/prisma.js'
 // GET /users
 export async function listUsers(req, res, next) {
   try {
-    const users = await prisma.user.findMany({ orderBy: { createdAt: 'desc'} })
-    res.json(users)
+    /**
+     * Tomamos los valores ya validados por zod
+     * -Si la ruta tiene validate(UsersSchemas.list, tendré req.validateData.query)
+     * -Si por lo que sea no pasara por validate, usamos req.query y ponemos defaults (1,20)
+     */
+    const { page = 1, limit = 20, search } = (req.validatedData?.query ?? req.query)
+
+    /**
+     * Filtro opcional:
+     * -Si "search" existe, buscamos coincidencias en email o name (case-insensitive)
+     * -Si "search" no existe, "where" será undefined -> sin filtro
+     */
+    const where = search ? {
+      OR: [
+        { email: { contains: search, mode: 'insensitive'} },
+        { name: { contains: search, mode: 'insensitive'} }
+      ]
+    }
+    : undefined
+    /**
+     * Paginacion con Prisma:
+     * - skip: cuantos registros saltar (por páginas anteriores)
+     * - take: cuantos regstros devolver (tamaño de pagina)
+     * Tamnbien devuelvo total para poder calcular TotalPages
+     */
+    const [total, users] = await Promise.all([
+      prisma.user.count({ where }), // total de registros que cumplen el filtro
+      prisma.user.findMany({
+        where,
+        orderBy: { createdAt: 'desc' }, // ordena por fecha creación descendente
+        skip: (page-1) * limit,         // salta (p-1)*limit
+        take: limit,                    // salta (p-1)*limit
+      })
+    ])
+    //Respuesta con metadatos de paginación
+    res.json({
+      page,                                   // página actual (número)
+      limit,                                  // tamaño pagina
+      total,                                  //total de registros que cumple con el filtro
+      totalPages: Math.ceil(total / limit),   
+      data: users                             //los usuarios de esta pagina
+    })
   } catch (err) {
     next(err)
   }

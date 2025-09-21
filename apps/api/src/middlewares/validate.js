@@ -38,7 +38,7 @@ export function validate (schemas = {}) {
           mensaje: i.message, //que pasó ejem: email no valido
         }));
         return res.status(400).json({
-          error: "Validacion fallida",
+          error: "Validacion fallida 😒",
           detalles: details,
         });
       }
