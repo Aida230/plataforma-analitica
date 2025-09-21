@@ -1,6 +1,6 @@
+import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { prisma } from '../lib/prisma.js'
-
 //POST /auth/register
 //Body esperando: { email: string, password: string, name?: string, role?: 'ADMIN'|'ANALYST'|'EXEC' }
 
@@ -45,5 +45,60 @@ export async function register(req, res, next) {
       return res.status(409).json({ error: 'el email ya existe 😩'})
     }
     next(err)
+  }
+}
+
+// POST /auth/login
+// Body: { email: string, password: string }
+
+export async function login(req, res, next) {
+  try {
+    const { email, password } = req.body ?? {}
+
+    // Validación mínima
+    if (!email) return res.status(400).json({ error: 'email es obligatorio 🥲' })
+    if (!password) return res.status(400).json({ error: 'la contraseña es obligatoria 😩' })
+
+    // 1) Buscar usuario por email con el hash
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        passwordHash: true, // <- necesario para comparar
+      }
+    })
+
+    // 2) Usuario existe y tiene hash
+    if (!user || !user.passwordHash) {
+      return res.status(401).json({ error: 'credenciales inválidas' })
+    }
+
+    // 3) Comparar contraseñas
+    const ok = await bcrypt.compare(String(password), user.passwordHash)
+    if (!ok) {
+      return res.status(401).json({ error: 'credenciales inválidas' })
+    }
+
+    // 4) Emitir JWT
+    const secret = process.env.JWT_SECRET
+    if (!secret) {
+      // Mejor fallar explícitamente si falta la clave
+      return res.status(500).json({ error: 'JWT_SECRET no está configurado' })
+    }
+
+    const payload = { sub: user.id, role: user.role }
+    const token = jwt.sign(payload, secret, { expiresIn: '7d' })
+
+    // 5) Responder sin el hash
+    const { passwordHash, ...publicUser } = user
+    return res.json({
+      token,
+      user: publicUser
+    })
+  } catch (err) {
+    return next(err)
   }
 }
