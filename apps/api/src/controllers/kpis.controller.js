@@ -12,7 +12,7 @@ function parseISOorNull(possibleDateValue) {
 // pero se parsean para que, cuando conectemos datos reales, el código ya esté preparado.
 export async function getKpiSummary(req, res, next) {
   try {
-    const { start, end } = req.query
+    const { start, end } = (req.validatedData?.query ?? req.query)
 
     // Convertimos parámetros a fechas (o null si son inválidos)
     const startDate = start ? parseISOorNull(start) : null
@@ -64,7 +64,7 @@ export async function getKpiSummary(req, res, next) {
 // - granularity (string: "day" | "week" | "month"; por defecto "day")
 export async function getKpiTimeseries(req, res, next) {
   try {
-    const { start, end, granularity = 'day' } = req.query
+    const { start, end, granularity } = (req.validatedData?.query ?? req.query)
 
     // Si no vienen fechas válidas, definimos un rango de 7 días (mock).
     const fallbackStartDate = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000)
@@ -72,6 +72,9 @@ export async function getKpiTimeseries(req, res, next) {
 
     const startDate = parseISOorNull(start) ?? fallbackStartDate
     const endDate = parseISOorNull(end) ?? fallbackEndDate
+
+    // Si Zod validó granularity como enum, aquí ya viene limpio; si no vino, default 'day'
+    const gran = granularity ?? 'day'
 
     // Determinamos el tamaño del paso en milisegundos según la granularidad solicitada.
     // Esto nos permite generar puntos en la serie con ese intervalo.

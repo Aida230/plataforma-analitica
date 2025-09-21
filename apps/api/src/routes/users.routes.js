@@ -12,7 +12,7 @@ import { UsersSchemas } from '../schemas/users.schema.js'
 
 export const usersRouter = Router()
 
-usersRouter.get('/', /* validate(UsersSchemas.list), */ listUsers)
+usersRouter.get('/', validate(UsersSchemas.list), listUsers)
 usersRouter.get('/:id', validate(UsersSchemas.getById), getUserById)
 usersRouter.post('/', validate(UsersSchemas.create), createUser)
 usersRouter.put('/:id', validate(UsersSchemas.replace), replaceUser)
