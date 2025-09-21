@@ -13,12 +13,15 @@
 // Ese cliente es una librería que usaremos en el backend
 // para hacer queries a la base de datos (crear, leer, actualizar, borrar)
 
-
 generator client {
-  provider = "prisma-client-js"     // Genera el cliente en JS
+  provider = "prisma-client-js" // Genera el cliente en JS
 }
 
-
+enum Role {
+  ADMIN
+  ANALYST
+  EXEC
+}
 
 // ----------------------------
 // DATASOURCE (CONEXIÓN)
@@ -26,6 +29,7 @@ generator client {
 // Aquí le decimos a Prisma qué base de datos usar
 // provider = "postgresql" → estamos usando PostgreSQL
 // url = se saca del archivo .env con la variable DATABASE_URL
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -37,9 +41,12 @@ datasource db {
 // Aquí definimos un modelo "User"
 // Prisma lo traducirá a una tabla llamada "User"
 // con las columnas que pongamos aquí.
+
 model User {
-  id        String   @id @default(cuid())  // Identificador único (texto tipo UUID)
-  email     String   @unique               // Campo único (no se puede repetir)
-  name      String?                        // Campo opcional (puede ser null)
-  createdAt DateTime @default(now())       // Fecha de creación, se rellena sola
+  id           String   @id @default(cuid()) // Identificador único (texto tipo UUID)
+  email        String   @unique // Campo único (no se puede repetir)
+  name         String? // Campo opcional (puede ser null)
+  passwordHash String? // ← NUEVO: opcional para no romper usuarios existentes
+  role         Role     @default(EXEC) // ← NUEVO: rol por defecto
+  createdAt    DateTime @default(now()) // Fecha de creación, se rellena sola
 }

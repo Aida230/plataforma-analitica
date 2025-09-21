@@ -10,3 +10,9 @@ node scripts/seed.mjs
 
 ejecutar script de consulta de usuario:
 node scripts/list.mjs
+
+para formatear el esquema de prisma
+npx prisma format
+
+para hacer la migracion de add_auth_fields de los hash 
+npx prisma migrate dev --name add-auth-fields
