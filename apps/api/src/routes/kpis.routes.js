@@ -2,10 +2,14 @@ import { Router } from 'express'
 import { getKpiSummary, getKpiTimeseries } from '../controllers/kpis.controller.js'
 import { validate } from '../middlewares/validate.js'
 import { KpiSchemas } from '../schemas/kpis.schemas.js'
-
+import { requireAuth } from '../middlewares/auth.middleware.js'
 // Creamos un enrutador específico para KPIs.
 // Todas las rutas definidas aquí se montarán bajo el prefijo elegido en el agregador (ver Paso 3).
 export const kpisRouter = Router()
+
+// ⬇️ Aplicamos el middleware a todo lo que cuelga de /kpis/*
+//    - A partir de esta línea, cualquier GET /kpis/... exigirá un token válido
+kpisRouter.use(requireAuth)
 
 // GET /kpis/summary
 // Devuelve un resumen agregado de KPIs.
