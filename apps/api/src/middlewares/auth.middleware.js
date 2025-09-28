@@ -25,12 +25,12 @@ export function requireAuth(req, res, next) {
     
     //7-Si todo va bien, pasams al siguiente middleware/controlador
     return next()
-  } catch (err) {
+  } catch (error) {
     //Si el token es invalido o expiró, devolvemos 401 con un mensaje específico cuando sea posible
-    if (err?.name === 'TokenExpiredError') {
-      return res.status(401).json({ err: 'Token expirado' })
+    if (error?.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expirado' })
     }
-    return res.status(401).json({ err: 'Token invalido' })
+    return res.status(401).json({ error: 'Token invalido' })
 
   }
 }
