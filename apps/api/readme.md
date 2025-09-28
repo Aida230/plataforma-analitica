@@ -34,3 +34,17 @@ Body → raw → JSON:
   "email": "ada+1@example.com",
   "password": "secret123"
 }
+
+
+
+explicacion de roles
+4. Ejemplo aplicado a tu API
+
+/users (crear, borrar, modificar usuarios)
+🔑 Solo ADMIN.
+
+/users (listar usuarios o ver detalles)
+🔑 Permitido a ADMIN y ANALYST (porque necesitan datos de la gente que usa la plataforma).
+
+/kpis (ver métricas de negocio)
+🔑 Permitido a todos los roles (ejecutivos necesitan ver resultados, analistas procesan datos, admin también puede).

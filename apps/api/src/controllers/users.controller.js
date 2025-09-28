@@ -1,5 +1,14 @@
 import { prisma } from '../lib/prisma.js'
 
+//Selección segura para nunca devolver passwordHash
+const publicUserSelect = {
+  id: true,
+  email: true,
+  name: true,
+  role: true,
+  createdAt: true,
+}
+
 // GET /users
 export async function listUsers(req, res, next) {
   try {
@@ -26,7 +35,7 @@ export async function listUsers(req, res, next) {
      * Paginacion con Prisma:
      * - skip: cuantos registros saltar (por páginas anteriores)
      * - take: cuantos regstros devolver (tamaño de pagina)
-     * Tamnbien devuelvo total para poder calcular TotalPages
+     * Tambien devuelvo total para poder calcular TotalPages
      */
     const [total, users] = await Promise.all([
       prisma.user.count({ where }), // total de registros que cumplen el filtro
@@ -34,7 +43,7 @@ export async function listUsers(req, res, next) {
         where,
         orderBy: { createdAt: 'desc' }, // ordena por fecha creación descendente
         skip: (page-1) * limit,         // salta (p-1)*limit
-        take: limit,                    // salta (p-1)*limit
+        select: publicUserSelect, // ← no incluir passwordHash                    // salta (p-1)*limit
       })
     ])
     //Respuesta con metadatos de paginación
@@ -50,12 +59,16 @@ export async function listUsers(req, res, next) {
   }
 }
 
+
 // GET /users/:id
 export async function getUserById(req, res, next) {
   try {
     const { id } = (req.validatedData?.params ?? req.params)
 
-    const user = await prisma.user.findUnique({ where: { id } })
+    const user = await prisma.user.findUnique({ 
+      where: { id }, 
+      select: publicUserSelect,
+    })
     if (!user) return res.status(404).json({ error: 'Usuario no encontrado'})
     res.json(user)
   } catch (err) {
@@ -69,7 +82,10 @@ export async function createUser(req, res, next) {
     const { email, name } = (req.validatedData?.body ?? req.body)
 
     if (!email) return res.status(400).json({ error: 'El campo "email" es obligatorio'})
-    const created = await prisma.user.create({ data: { email, name }})
+    const created = await prisma.user.create({ 
+      data: { email, name },
+      select: publicUserSelect,
+    })
     res.status(201).json(created)
   } catch (err) {
     // Prisma P2002 → unique (email duplicado)
@@ -93,6 +109,7 @@ export async function replaceUser(req, res, next) {
         ...(email !== undefined ? { email } : {}),
         ...(name !== undefined ? { name }: {}),
       },
+      select: publicUserSelect,
     })
     res.json(updated)
   } catch (err) {
@@ -114,6 +131,7 @@ export async function updateUser(req, res, next) {
         ...(email !== undefined ? { email } : {}),
         ...(name !== undefined ? { name } : {}),
       },
+      select: publicUserSelect,
     })
     res.json(updated)
   } catch (err) {
