@@ -20,6 +20,7 @@ export default function Navbar() {
         <nav className="flex gap-3">
           <Link href="/" className={linkClass('/')}>Inicio</Link>
           <Link href="/about" className={linkClass('/about')}>Sobre</Link>
+          <Link href="/dashboard" className={linkClass('/dashboard')}>Dashboard</Link>
         </nav>
       </div>
     </header>
