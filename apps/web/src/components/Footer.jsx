@@ -14,7 +14,7 @@ export default function Footer() {
 
         {/* Derecha */}
         <nav className="flex flex-wrap justify-center gap-4 text-gray-500">
-          <Link href="/about" className="hover:text-gray-900 transition-colors">
+          <Link href="/about" className="hover:text-brand-700 transition-colors">
             Sobre
           </Link>
           <Link href="#" className="hover:text-gray-900 transition-colors">
