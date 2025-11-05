@@ -24,13 +24,13 @@ export default function HomePage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/dashboard"
-              className="px-5 py-2.5 rounded-xl bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors"
+              className="px-5 py-2.5 rounded-xl bg-brand-600 text-white text-sm font-medium hover:bg-brand-700"
             >
               Ir al Dashboard
             </Link>
             <Link
               href="/login"
-              className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-100 transition-colors"
+              className="px-5 py-2.5 rounded-xl border border-brand-200 text-brand-700 text-sm font-medium hover:bg-brand-50"
             >
               Login
             </Link>
@@ -88,7 +88,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/dashboard"
-            className="inline-block px-5 py-2.5 rounded-xl bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors"
+            className="inline-block px-5 py-2.5 rounded-xl bg-brand-600 text-white text-sm font-medium hover:bg-brand-700"
           >
             Abrir Dashboard
           </Link>

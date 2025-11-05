@@ -1,17 +1,35 @@
 @import "tailwindcss";
 
+/* ====== Variables base (modo claro) ====== */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+/* ====== Tema principal (Tailwind inline) ====== */
 @theme inline {
+  /* Colores base */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Fuentes */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* ====== Paleta de marca (AZUL) ====== */
+  --color-brand-50:  #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb; /* principal */
+  --color-brand-700: #1d4ed8; /* hover */
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
 }
 
+/* ====== Modo oscuro ====== */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,6 +37,7 @@
   }
 }
 
+/* ====== Estilos globales ====== */
 body {
   background: var(--background);
   color: var(--foreground);
