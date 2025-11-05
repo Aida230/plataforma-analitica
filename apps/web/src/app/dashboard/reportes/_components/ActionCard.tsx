@@ -4,7 +4,7 @@ export default function ActionCard({
 }: { title: string; description: string; actionLabel: string }) {
   return (
     <div className="rounded-2xl p-4 shadow bg-white flex flex-col">
-      <div className="text-base font-semibold">{title}</div>
+      <div className="text-base font-semibold text-blue-800">{title}</div>
       <p className="text-sm text-gray-500 mt-1 flex-1">{description}</p>
       <div className="mt-4">
         <button

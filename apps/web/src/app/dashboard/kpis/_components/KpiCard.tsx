@@ -19,7 +19,7 @@ export default function KpiCard({
   return (
     <div className="rounded-2xl p-4 shadow bg-white">
       <div className="text-sm text-gray-500">{title}</div>
-      <div className="mt-1 text-2xl font-semibold text-gray-700">{value}</div>
+      <div className="mt-1 text-2xl font-semibold text-blue-800">{value}</div>
       {hint ? <div className="mt-1 text-xs text-gray-400">{hint}</div> : null}
     </div>
   );

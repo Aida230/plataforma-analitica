@@ -13,7 +13,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="border-r border-gray-200 bg-gray-50 p-4">
+    <aside className="border-r border-gray-200 bg-gray-50 p-4 md:p-4">
       <div className="mb-4 text-sm font-semibold text-gray-500 uppercase">Menú</div>
       <nav className="flex flex-col gap-1">
         {links.map((l) => {

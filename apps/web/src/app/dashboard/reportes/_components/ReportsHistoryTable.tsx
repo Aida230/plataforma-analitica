@@ -17,7 +17,7 @@ export default function ReportsHistoryTable({ rows }: { rows: ReportItem[] }) {
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.id} className="border-t">
+            <tr key={r.id} className="border-t text-blue-800">
               <td className="px-4 py-3 font-mono">{r.id}</td>
               <td className="px-4 py-3">{r.name}</td>
               <td className="px-4 py-3">{r.when}</td>
@@ -26,7 +26,7 @@ export default function ReportsHistoryTable({ rows }: { rows: ReportItem[] }) {
               <td className="px-4 py-3">
                 <button
                   type="button"
-                  className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed"
+                  className="px-3 py-1.5 rounded-lg bg-gray-200 text-gray-700 cursor-not-allowed"
                   title="Descarga de ejemplo (próximamente)"
                   disabled
                 >
